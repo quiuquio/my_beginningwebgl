@@ -1,0 +1,47 @@
+<!doctipy html>
+<html>
+	<head>
+		<title> My basic Texture </title>
+		<style>
+			body{ background-color: grey;}
+			canvas{ background-color: white;}
+		</style>
+		<script src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+		<script src="../lib/raf_polyfill.js"></script>
+		<script src="../lib/gl-matrix-min.js"></script>
+		
+		<script>
+			var gl = null,
+				canvas = null,
+				glProgram = null,
+				fragmentShader = null,
+				vertexShader = null;
+			
+			var vertexPositionAttribute = null,
+				triangelsVerticeBuffer = null;
+				
+			var texture = null,
+				textureImage = null;
+			
+			function loadTexture(){
+				textureImage = newImage();
+				textureImage.src = "../texture/smiley-128px.png";
+			}
+			
+			function setupTexture(){
+				texture = gl.createTexture();
+				gl.bindTexture(gl.TEXTURE_2D, texture);
+				gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+				gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, textureImage);
+				gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+                gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+				
+				if( !gl.isTexture(texture) ){
+					console.error("Error: Texture is invalid");
+				}
+				
+				glProgram.semplerUniform = gl.getUniformLocation(glProgram, "uSampler");
+				gl.uniform1i(glProgram.samplerUniform, 0);
+				
+			}
+		</script>
